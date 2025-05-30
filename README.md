@@ -13,9 +13,13 @@ A simple WordPress plugin to upload and process CSV files via an admin form.
 ## Folder Structure
 
 csv-data-uploader/
+
 ├── assets/
+
 ├── template/
+
 ├── style.css
+
 └── csv-data-uploader.php
 
 
