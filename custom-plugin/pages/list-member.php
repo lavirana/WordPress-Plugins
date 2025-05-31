@@ -1,10 +1,17 @@
+<?php
+
+global $wpdb;
+
+$all_members = $wpdb->get_results("SELECT * from {$wpdb->prefix}mms_form_data",ARRAY_A);
+
+?>
+
 
 <div class="container">
   <h2>All Members</h2>
   <div class="panel panel-primary">
     <div class="panel-heading">All Members</div>
-    <div class="panel-body">
-  <p>The .table class adds basic styling (light padding and only horizontal dividers) to a table:</p>            
+    <div class="panel-body">            
   <table class="table" id="tbl-member">
     <thead>
       <tr>
@@ -17,30 +24,27 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>22</td>
-        <td>Ashish</td>
-        <td>ashish@gmail.com</td>
-        <td>Male</td>
-        <td>Tech Lead</td>
+        <?php if(count($all_members) > 0 ){
+
+foreach($all_members as $all_member){ ?>
+  <tr>
+        <td><?php echo $all_member['id']; ?></td>
+        <td><?php echo $all_member['name']; ?></td>
+        <td><?php echo $all_member['email']; ?></td>
+        <td><?php echo ucfirst($all_member['gender']); ?></td>
+        <td><?php echo $all_member['designation']; ?></td>
         <td>
-            <a href="javascript:void(0);" class="btn btn-warning">Edit</a>
-            <a href="javascript:void(0);" class="btn btn-info">View</a>
-            <a href="javascript:void(0);" class="btn btn-danger">Delete</a>
+            <a href="admin.php?page=member-system&action=edit&empId=<?php echo $all_member['id']; ?>" class="btn btn-warning">Edit</a>
+            <a href="admin.php?page=member-system&action=view&empId=<?php echo $all_member['id']; ?>" class="btn btn-info">View</a>
+            <a href="admin.php?page=list-member&action=delete&empId=<?php echo $all_member['id']; ?>" class="btn btn-danger">Delete</a>
         </td>
       </tr>
-      <tr>
-        <td>22</td>
-        <td>Ashish</td>
-        <td>ashish@gmail.com</td>
-        <td>Male</td>
-        <td>Coder</td>
-        <td>
-            <a href="javascript:void(0);" class="btn btn-warning">Edit</a>
-            <a href="javascript:void(0);" class="btn btn-info">View</a>
-            <a href="javascript:void(0);" class="btn btn-danger">Delete</a>
-        </td>
-      </tr>
+<?php
+}
+        }else{
+echo "No member found";
+        } ?>
+    
     </tbody>
   </table>
 
