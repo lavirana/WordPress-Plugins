@@ -1,7 +1,18 @@
 <?php
 
 global $wpdb;
+$message = "";
 
+
+//Delete Member
+if($_SERVER['REQUEST_METHOD'] == "POST"){
+  if(isset($_POST['mem_del_id']) && !empty($_POST['mem_del_id'])){
+$wpdb->delete("{$wpdb->prefix}mms_form_data", array(
+    "id" => intval($_POST['mem_del_id'])
+));
+$message = "Mmember has been deleted successfully";
+  }
+}
 $all_members = $wpdb->get_results("SELECT * from {$wpdb->prefix}mms_form_data",ARRAY_A);
 
 ?>
@@ -11,7 +22,17 @@ $all_members = $wpdb->get_results("SELECT * from {$wpdb->prefix}mms_form_data",A
   <h2>All Members</h2>
   <div class="panel panel-primary">
     <div class="panel-heading">All Members</div>
-    <div class="panel-body">            
+    <div class="panel-body">     
+    
+    <?php if(!empty($message)){
+        ?>
+<div class="alert alert-success">
+    <?php echo $message; ?>
+</div>
+
+<?php
+    } ?>
+    
   <table class="table" id="tbl-member">
     <thead>
       <tr>
@@ -35,8 +56,14 @@ foreach($all_members as $all_member){ ?>
         <td><?php echo $all_member['designation']; ?></td>
         <td>
             <a href="admin.php?page=member-system&action=edit&mem=<?php echo $all_member['id']; ?>" class="btn btn-warning">Edit</a>
+
+            <form method="post" id="frm-delete-member-<?php echo $all_member['id']; ?>" action="<?php echo $_SERVER['PHP_SELF'] ?>?page=list-member">
+                <input type="hidden" name="mem_del_id" value="<?php echo $all_member['id']; ?>">
+            </form>
             <a href="admin.php?page=member-system&action=view&mem=<?php echo $all_member['id']; ?>" class="btn btn-info">View</a>
-            <a href="admin.php?page=list-member&action=delete&mem=<?php echo $all_member['id']; ?>" class="btn btn-danger">Delete</a>
+            <a href="javascript:void(0);" onclick="if(confirm('Are you sure you want to delete?')){
+            jQuery('#frm-delete-member-<?php echo $all_member['id']; ?>').submit();
+            }" class="btn btn-danger">Delete</a>
         </td>
       </tr>
 <?php

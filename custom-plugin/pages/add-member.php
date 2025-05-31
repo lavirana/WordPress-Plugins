@@ -42,21 +42,39 @@ $member = $wpdb->get_row(
         $gender = sanitize_text_field($_POST['gender']);
         $designation = sanitize_text_field($_POST['designation']);
 
-        //Insert Command
-        $wpdb->insert("{$wpdb->prefix}mms_form_data", array(
-            "name" => $name,
-            "email" => $email,
-            "phoneNo" => $phoneNo,
-            "gender" => $gender,
-            "designation" => $designation
-        ));
-        $last_inserted_id = $wpdb->insert_id;
-        if ($last_inserted_id > 0) {
-            $message = "Member saved successfully";
-            $status = 1;
-        } else {
-            $message = "Failed to saved an member";
-            $status = 0;
+        //Action Type
+        if(isset($_GET['action'])){
+            $memId = $_GET['mem'];
+            //Edit operation
+                    $wpdb->update("{$wpdb->prefix}mms_form_data", array(
+                        "name" => $name,
+                        "email" => $email,
+                        "phoneNo" => $phoneNo,
+                        "gender" => $gender,
+                        "designation" => $designation
+                    ), array(
+                        "id" => $memId
+                    ));
+                    $message = "Member updated successfully";
+                    $status = 1;
+        }else{
+            //Add Opreration
+                  //Insert Command
+                    $wpdb->insert("{$wpdb->prefix}mms_form_data", array(
+                        "name" => $name,
+                        "email" => $email,
+                        "phoneNo" => $phoneNo,
+                        "gender" => $gender,
+                        "designation" => $designation
+                    ));
+                    $last_inserted_id = $wpdb->insert_id;
+                    if ($last_inserted_id > 0) {
+                        $message = "Member saved successfully";
+                        $status = 1;
+                    } else {
+                        $message = "Failed to saved an member";
+                        $status = 0;
+                    }
         }
     }
     ?>
@@ -77,37 +95,48 @@ $member = $wpdb->get_row(
                         <?php
                         }   
                   } ?>
-                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?page=member-system" method="post" id="mms-frm-add-member">
+                        <form
+                       action = '<?php if($action == 'edit'){
+                            echo "admin.php?page=member-system&action=edit&mem=".$mem;
+                        }else{
+                            echo "admin.php?page=member-system";
+                        } ?>'
+                      
+                         method="post" id="mms-frm-add-member">
                             <div class="form-group">
                                 <label for="name">Name:</label>
-                                <input type="text" value="<?php if($action == 'view') echo $member['name'];  ?>" class="form-control" id="name" placeholder="Enter name" name="name" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
+                                <input type="text" value="<?php if($action == 'view' || $action == 'edit') echo $member['name'];  ?>" class="form-control" id="name" placeholder="Enter name" name="name" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email:</label>
-                                <input type="email" value="<?php if($action == 'view') echo $member['email'];  ?>"  class="form-control" id="email" placeholder="Enter email" name="email" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
+                                <input type="email" value="<?php if($action == 'view' || $action == 'edit') echo $member['email'];  ?>"  class="form-control" id="email" placeholder="Enter email" name="email" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
                             </div>
                             <div class="form-group">
                                 <label for="phoneNo">Phone no:</label>
-                                <input type="text" value="<?php if($action == 'view') echo $member['phoneNo'];  ?>"  class="form-control" id="phoneNo" placeholder="Enter Phone Number" name="phoneNo" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
+                                <input type="text" value="<?php if($action == 'view' || $action == 'edit') echo $member['phoneNo'];  ?>"  class="form-control" id="phoneNo" placeholder="Enter Phone Number" name="phoneNo" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
                             </div>
                             <div class="form-group">
                                 <label for="gender">Gender:</label>
                                 <select <?php if($action == 'view'){ echo "disabled"; } ?> name="gender" id="gender" class="form-control" required>
                                     <option value="">Select Gender</option>
                                     <option value="male"
-                                    <?php if($action == 'view' && $member['gender'] == 'male'){ echo "selected"; } ?>
+                                    <?php if([$action == 'view' && $action == 'edit'] && $member['gender'] == 'male'){ echo "selected"; } ?>
                                     >Male</option>
                                     <option value="female"
-                                    <?php if($action == 'view' && $member['gender'] == 'female'){ echo "selected"; } ?>
+                                    <?php if([$action == 'view' && $action == 'edit'] && $member['gender'] == 'female'){ echo "selected"; } ?>
                                     >Female</option>
-                                    <option <?php if($action == 'view' && $member['gender'] == 'other'){ echo "selected"; } ?> value="other">Other</option>
+                                    <option <?php if([$action == 'view' && $action == 'edit'] && $member['gender'] == 'other'){ echo "selected"; } ?> value="other">Other</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="designation">Designation</label>
-                                <input type="text" value="<?php if($action == 'view') echo $member['designation'];  ?>"  class="form-control" id="designation" placeholder="Enter Designation" name="designation" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
+                                <input type="text" value="<?php if($action == 'view' || $action == 'edit') echo $member['designation'];  ?>"  class="form-control" id="designation" placeholder="Enter Designation" name="designation" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
                             </div>
-                            <?php if($action != 'view'){ ?>
+                            <?php if($action == 'view'){  ?>ß
+                                
+                          <?php   }elseif($action == 'edit'){ ?>
+                                <button type="submit" class="btn btn-success" name="btn_submit">Update</button>
+                         <?php  }else{ ?>
                                 <button type="submit" class="btn btn-success" name="btn_submit">Submit</button>
                           <?php  } ?>      
                         </form>
