@@ -2,6 +2,35 @@
 
     $message = "";
     $status =  "";
+    $action = "";
+    $mem = "";
+    $title = "ADD MEMBER";
+
+    //find request for view and edit
+    if(isset($_GET['action']) && isset($_GET['mem'])){
+
+        global $wpdb;
+        $mem = $_GET['mem'];
+                //Action : Edit
+                if($_GET['action'] == 'edit'){
+                    $action = "edit";
+                    $title = "Edit Member";
+                }
+
+                //Action : View
+                if($_GET['action'] == 'view'){
+                    $action = "view";
+                    $title = "View Member";
+                }
+                //Single employee information
+$member = $wpdb->get_row(
+    $wpdb->prepare("SELECT * from {$wpdb->prefix}mms_form_data where id = %d", $mem), ARRAY_A
+);
+
+
+    }
+
+    //save form data
     if ($_SERVER['REQUEST_METHOD'] == "POST"  && isset($_POST['btn_submit'])) {
 
         // FORM SUBMITTED
@@ -34,9 +63,10 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h2>Add Member</h2>
+                <h2><?php if(isset($title)) { echo $title; } ?></h2>
                 <div class="panel panel-primary">
-                    <div class="panel-heading">Add Member</div>
+                 
+                    <div class="panel-heading"><?php if(isset($title)) { echo $title; } ?></div>
                     <div class="panel-body">
                 <?php  if(!empty($message)){  
                         if($status == 1){  ?>
@@ -50,36 +80,37 @@
                         <form action="<?php echo $_SERVER['PHP_SELF']; ?>?page=member-system" method="post" id="mms-frm-add-member">
                             <div class="form-group">
                                 <label for="name">Name:</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" required>
+                                <input type="text" value="<?php if($action == 'view') echo $member['name'];  ?>" class="form-control" id="name" placeholder="Enter name" name="name" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email:</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+                                <input type="email" value="<?php if($action == 'view') echo $member['email'];  ?>"  class="form-control" id="email" placeholder="Enter email" name="email" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
                             </div>
                             <div class="form-group">
                                 <label for="phoneNo">Phone no:</label>
-                                <input type="text" class="form-control" id="phoneNo" placeholder="Enter Phone Number" name="phoneNo" required>
+                                <input type="text" value="<?php if($action == 'view') echo $member['phoneNo'];  ?>"  class="form-control" id="phoneNo" placeholder="Enter Phone Number" name="phoneNo" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
                             </div>
                             <div class="form-group">
                                 <label for="gender">Gender:</label>
-                                <select name="gender" id="gender" class="form-control" required>
+                                <select <?php if($action == 'view'){ echo "disabled"; } ?> name="gender" id="gender" class="form-control" required>
                                     <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
+                                    <option value="male"
+                                    <?php if($action == 'view' && $member['gender'] == 'male'){ echo "selected"; } ?>
+                                    >Male</option>
+                                    <option value="female"
+                                    <?php if($action == 'view' && $member['gender'] == 'female'){ echo "selected"; } ?>
+                                    >Female</option>
+                                    <option <?php if($action == 'view' && $member['gender'] == 'other'){ echo "selected"; } ?> value="other">Other</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="designation">Designation</label>
-                                <input type="password" class="form-control" id="designation" placeholder="Enter Designation" name="designation" required>
+                                <input type="text" value="<?php if($action == 'view') echo $member['designation'];  ?>"  class="form-control" id="designation" placeholder="Enter Designation" name="designation" required <?php if($action == 'view'){ echo "readonly='readonly'"; } ?>>
                             </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="remember"> Remember me</label>
-                            </div>
-                            <button type="submit" class="btn btn-success" name="btn_submit">Submit</button>
+                            <?php if($action != 'view'){ ?>
+                                <button type="submit" class="btn btn-success" name="btn_submit">Submit</button>
+                          <?php  } ?>      
                         </form>
-
-
                     </div>
                 </div>
             </div>
