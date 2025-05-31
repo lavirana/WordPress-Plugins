@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?php echo MMS_PLUGIN_URL ?>css/bootstrap.min.css">
-  
-</head>
-
-<body>
-
     <div class="container">
         <div class="row" >
             <div class="col-sm-12" >
@@ -19,22 +6,22 @@
             <div class="panel-heading">Add Member</div>
             <div class="panel-body">
 
-                <form action="/action_page.php">
+                <form action="javascript:void(0);" method="post" id="mms-frm-add-member">
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
+                        <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label for="phoneNo">Phone no:</label>
-                        <input type="password" class="form-control" id="phoneNo" placeholder="Enter Phone Number" name="phoneNo">
+                        <input type="password" class="form-control" id="phoneNo" placeholder="Enter Phone Number" name="phoneNo" required>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
-                        <select name="gender" id="gender" class="form-control">
+                        <select name="gender" id="gender" class="form-control" required>
                             <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -43,7 +30,7 @@
                     </div>
                     <div class="form-group">
                         <label for="designation">Designation</label>
-                        <input type="password" class="form-control" id="designation" placeholder="Enter Designation" name="designation">
+                        <input type="password" class="form-control" id="designation" placeholder="Enter Designation" name="designation" required>
                     </div>
                     <div class="checkbox">
                         <label><input type="checkbox" name="remember"> Remember me</label>
@@ -57,9 +44,3 @@
             </div>
         </div>
     </div>
-
-    <script src="<?php echo MMS_PLUGIN_URL ?>js/jquery.min.js"></script>
-    <script src="<?php echo MMS_PLUGIN_URL ?>js/bootstrap.min.js"></script>
-</body>
-
-</html>

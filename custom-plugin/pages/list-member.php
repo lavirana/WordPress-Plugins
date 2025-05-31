@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>All Members</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<?php echo MMS_PLUGIN_URL ?>css/bootstrap.min.css">
- <link rel="stylesheet" href="<?php echo MMS_PLUGIN_URL ?>css/dataTables.min.css">
- 
-</head>
-<body>
- 
+
 <div class="container">
   <h2>All Members</h2>
   <div class="panel panel-primary">
@@ -58,17 +47,6 @@
     </div>
   </div>
 </div>
-<script src="<?php echo MMS_PLUGIN_URL ?>js/jquery.min.js"></script>
-<script src="<?php echo MMS_PLUGIN_URL ?>js/bootstrap.min.js"></script>
-<script src="<?php echo MMS_PLUGIN_URL ?>js/dataTables.min.js"></script>
-<script>
-    jQuery(document).ready(function(){
-        new DataTable('#tbl-member');
-    });
-</script>
-</body>
-</html>
-
 
 
 
