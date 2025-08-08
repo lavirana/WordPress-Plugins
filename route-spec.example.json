@@ -1,0 +1,60 @@
+{
+  "groups": [
+    {
+      "type": "web",
+      "prefix": "admin",
+      "name_prefix": "admin.",
+      "middleware": ["web", "auth", "verified"],
+      "controllers": [
+        {
+          "controller": "DashboardController",
+          "uri": "/",
+          "routes": [
+            {"method": "get", "uri": "/", "action": "__invoke", "name": "dashboard"}
+          ]
+        },
+        {
+          "controller": "UserController",
+          "uri": "users",
+          "resource": true,
+          "only": ["index", "show", "edit", "update"],
+          "parameters": {"users": "user"},
+          "names": {"index": "users.index", "show": "users.show"}
+        },
+        {
+          "controller": "PostController",
+          "uri": "posts",
+          "routes": [
+            {"method": "get", "uri": "posts", "action": "index", "name": "posts.index"},
+            {"method": "post", "uri": "posts", "action": "store", "name": "posts.store", "middleware": ["can:create,App\\Models\\Post"]},
+            {"method": "get", "uri": "posts/{post}", "action": "show", "name": "posts.show"},
+            {"method": "put", "uri": "posts/{post}", "action": "update"},
+            {"method": "delete", "uri": "posts/{post}", "action": "destroy", "middleware": ["can:delete,post"]}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "api",
+      "prefix": "v1",
+      "middleware": ["api"],
+      "controllers": [
+        {
+          "controller": "Api\\V1\\AuthController",
+          "uri": "auth/login",
+          "routes": [
+            {"method": "post", "uri": "auth/login", "action": "login", "name": "auth.login"}
+          ]
+        },
+        {
+          "controller": "Api\\V1\\ArticleController",
+          "uri": "articles",
+          "api_resource": true,
+          "except": ["create", "edit"],
+          "parameters": {"articles": "article"},
+          "shallow": true
+        }
+      ]
+    }
+  ]
+}
