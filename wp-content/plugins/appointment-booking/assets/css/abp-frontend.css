@@ -1,0 +1,15 @@
+.abp-booking-form{border:1px solid #e2e8f0;padding:16px;border-radius:8px;max-width:560px}
+.abp-booking-form .abp-field{margin-bottom:12px}
+.abp-booking-form label{display:block;font-weight:600;margin-bottom:6px}
+.abp-booking-form input[type="text"],
+.abp-booking-form input[type="email"],
+.abp-booking-form input[type="tel"],
+.abp-booking-form input[type="date"],
+.abp-booking-form select,
+.abp-booking-form textarea{width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px}
+.abp-booking-form .abp-actions{margin-top:16px}
+.abp-booking-form .abp-button{background:#0ea5e9;color:white;border:none;padding:10px 16px;border-radius:6px;cursor:pointer}
+.abp-booking-form .abp-button:hover{background:#0284c7}
+.abp-message{margin-top:12px;padding:10px;border-radius:6px}
+.abp-message.abp-success{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.abp-message.abp-error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
